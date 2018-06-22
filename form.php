@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
   <meta charset="UTF-8">
@@ -17,6 +17,7 @@
       align-items: center;
       background: #78909C;
     }
+
   </style>
 </head>
 
