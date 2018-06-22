@@ -12,11 +12,9 @@ $stmt->bindValue(':event_type_id', $_POST["options"], PDO::PARAM_INT);
 $stmt->execute();
 
 $events = $pdo->query("select * from events;")->fetchAll();
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +39,6 @@ $events = $pdo->query("select * from events;")->fetchAll();
     table {
       margin-right: 120px;
     }
-
   </style>
 </head>
 
@@ -50,39 +47,38 @@ $events = $pdo->query("select * from events;")->fetchAll();
     <div class="mdl-card__title">
       <h2 class="mdl-card__title-text">Event List</h2>
     </div>
+
     <div class="mdl-card__supporting-text">
-
-  <table class="mdl-data-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th class="mdl-data-table__cell--non-numeric">Title</th>
-      <th class="mdl-data-table__cell--non-numeric">Locale</th>
-      <th class="mdl-data-table__cell--non-numeric">Description</th>
-      <th class="mdl-data-table__cell--non-numeric">Event Type</th>
-      <th class="mdl-data-table__cell--non-numeric">Created</th>
-      <th class="mdl-data-table__cell--non-numeric">Modified</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-      foreach ($events as $event) {
-        $event_type = $event["event_type_id"] == 1 ? "合宿" : "新歓";
-        $event_description = mb_strimwidth($event["description"], 0, 100, '...', 'utf-8');
-        echo 
-          "<tr>",
-          "<td>$event[id]</td><td class='mdl-data-table__cell--non-numeric'>$event[title]</td>",
-          "<td class='mdl-data-table__cell--non-numeric'>$event[locale]</td>",
-          "<td class='mdl-data-table__cell--non-numeric'>$event_description</td>",
-          "<td class='mdl-data-table__cell--non-numeric'>$event_type</td>",
-          "<td class='mdl-data-table__cell--non-numeric'>$event[created]</td>",
-          "<td class='mdl-data-table__cell--non-numeric'>$event[modified]</td>",
-          "</tr>";
-      }
-     ?>
-  </tbody>
-</table>
-
+      <table class="mdl-data-table">
+        <thead>
+          <tr>
+          <th>ID</th>
+          <th class="mdl-data-table__cell--non-numeric">Title</th>
+          <th class="mdl-data-table__cell--non-numeric">Locale</th>
+          <th class="mdl-data-table__cell--non-numeric">Description</th>
+          <th class="mdl-data-table__cell--non-numeric">Event Type</th>
+          <th class="mdl-data-table__cell--non-numeric">Created</th>
+          <th class="mdl-data-table__cell--non-numeric">Modified</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php
+          foreach ($events as $event) {
+          $event_type = $event["event_type_id"] == 1 ? "合宿" : "新歓";
+          $event_description = mb_strimwidth($event["description"], 0, 100, '...', 'utf-8');
+          echo
+            "<tr>",
+            "<td>$event[id]</td><td class='mdl-data-table__cell--non-numeric'>$event[title]</td>",
+            "<td class='mdl-data-table__cell--non-numeric'>$event[locale]</td>",
+            "<td class='mdl-data-table__cell--non-numeric'>$event_description</td>",
+            "<td class='mdl-data-table__cell--non-numeric'>$event_type</td>",
+            "<td class='mdl-data-table__cell--non-numeric'>$event[created]</td>",
+            "<td class='mdl-data-table__cell--non-numeric'>$event[modified]</td>",
+            "</tr>";
+          }
+        ?>
+        </tbody>
+      </table>
     </div>
 
     <div class="mdl-card__actions mdl-card--border">
@@ -90,9 +86,8 @@ $events = $pdo->query("select * from events;")->fetchAll();
         Go to Create Page
       </a>
     </div>
-  </div>
 
+  </div>
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </body>
-
 </html>
