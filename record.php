@@ -2,16 +2,29 @@
 
 $pdo = new PDO("mysql:host=127.0.0.1; dbname=cakephp_test; charset=utf8", 'root', 'devfnit');
 
-$stmt = $pdo->prepare("insert into events(title, description, locale, event_type_id, created, modified) values(:title, :description, :locale, :event_type_id, now(), now());");
+if($_SERVER["REQUEST_METHOD"] == "POST") {
 
-$stmt->bindParam(':title', $_POST["title"], PDO::PARAM_STR);
-$stmt->bindParam(':description', $_POST["description"], PDO::PARAM_STR);
-$stmt->bindParam(':locale', $_POST["locale"], PDO::PARAM_STR);
-$stmt->bindValue(':event_type_id', $_POST["options"], PDO::PARAM_INT);
+    if (empty($_POST["title"])) {
+        $url = './form.php';
+        header('Location: ' . $url, true, 301);
+        exit;
+    }
 
-$stmt->execute();
+    $stmt = $pdo->prepare("insert into events(title, description, locale, event_type_id, created, modified) values(:title, :description, :locale, :event_type_id, now(), now());");
+
+    $stmt->bindParam(':title', $_POST["title"], PDO::PARAM_STR);
+    $stmt->bindParam(':description', $_POST["description"], PDO::PARAM_STR);
+    $stmt->bindParam(':locale', $_POST["locale"], PDO::PARAM_STR);
+    $stmt->bindValue(':event_type_id', $_POST["options"], PDO::PARAM_INT);
+
+    $stmt->execute();
+}
 
 $events = $pdo->query("select * from events;")->fetchAll();
+
+function h($str) {
+    return htmlspecialchars($str, ENT_QUOTES);
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -63,19 +76,21 @@ $events = $pdo->query("select * from events;")->fetchAll();
         </thead>
         <tbody>
         <?php
-          foreach ($events as $event) {
-          $event_type = $event["event_type_id"] == 1 ? "合宿" : "新歓";
-          $event_description = mb_strimwidth($event["description"], 0, 100, '...', 'utf-8');
-          echo
-            "<tr>",
-            "<td>$event[id]</td><td class='mdl-data-table__cell--non-numeric'>$event[title]</td>",
-            "<td class='mdl-data-table__cell--non-numeric'>$event[locale]</td>",
-            "<td class='mdl-data-table__cell--non-numeric'>$event_description</td>",
-            "<td class='mdl-data-table__cell--non-numeric'>$event_type</td>",
-            "<td class='mdl-data-table__cell--non-numeric'>$event[created]</td>",
-            "<td class='mdl-data-table__cell--non-numeric'>$event[modified]</td>",
-            "</tr>";
-          }
+        foreach ($events as $event):
+            $event_type = $event["event_type_id"] == 1 ? "合宿" : "新歓";
+            $event_description = mb_strimwidth($event["description"], 0, 100, '...', 'utf-8');
+         ?>
+            <tr>
+                <td><?php echo h($event["id"]); ?></td>
+                <td class='mdl-data-table__cell--non-numeric'><?php echo h($event["title"]); ?></td>
+                <td class='mdl-data-table__cell--non-numeric'><?php echo h($event["locale"]); ?></td>
+                <td class='mdl-data-table__cell--non-numeric'><?php echo nl2br(h($event_description)); ?></td>
+                <td class='mdl-data-table__cell--non-numeric'><?php echo h($event_type); ?></td>
+                <td class='mdl-data-table__cell--non-numeric'><?php echo h($event["created"]); ?></td>
+                <td class='mdl-data-table__cell--non-numeric'><?php echo h($event["modified"]); ?></td>
+            </tr>
+		<?php
+        endforeach;
         ?>
         </tbody>
       </table>
