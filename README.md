@@ -15,6 +15,6 @@
 
 ## 2018/07/03- システム構築 with CakePHP
 
-* REPOSITORY : https://github.com/TaikiFnit/sasaki-schedule
+* REPOSITORY : https://github.com/TaikiFnit/sasaki-scheduler
 * Results:
     * API Backend: https://sasaki-scheduler.herokuapp.co
